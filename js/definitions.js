@@ -24,6 +24,12 @@ var config = {
         contents: [
 
           
+            {
+              name: 'RNA Extraction Test',
+              path: 'operation_types/RNA_Extraction_Test' + '.md',
+              type: "local-md"
+            },
+          
 
         ]
 
