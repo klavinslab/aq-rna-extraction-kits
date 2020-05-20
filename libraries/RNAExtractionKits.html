@@ -938,7 +938,7 @@ $(document).ready(function() {
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#run_kit_protocol-instance_method" title="#run_kit_protocol (instance method)">#<strong>run_kit_protocol</strong>(sample_volume:)  &#x21d2; void </a>
+      <a href="#run_rna_extraction_kit-instance_method" title="#run_rna_extraction_kit (instance method)">#<strong>run_rna_extraction_kit</strong>(operations: [], sample_volume: nil)  &#x21d2; void </a>
     
 
     
@@ -993,9 +993,9 @@ $(document).ready(function() {
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="run_kit_protocol-instance_method">
+  <h3 class="signature first" id="run_rna_extraction_kit-instance_method">
   
-    #<strong>run_kit_protocol</strong>(sample_volume:)  &#x21d2; <tt>void</tt> 
+    #<strong>run_rna_extraction_kit</strong>(operations: [], sample_volume: nil)  &#x21d2; <tt>void</tt> 
   
 
   
@@ -1003,7 +1003,29 @@ $(document).ready(function() {
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p class="note returns_void">This method returns an undefined value.</p>
+    
+  <div class="note notetag">
+    <strong>Note:</strong>
+    <div class='inline'>
+<p>if `sample_volume` is provided, then all samples will be run using that volume of sample</p>
+</div>
+  </div>
+
+  <div class="note notetag">
+    <strong>Note:</strong>
+    <div class='inline'>
+<p>if `sample_volume` is not provided, but `operations` are, then the protocol will look for sample_volumes assigned to the `Operations`</p>
+</div>
+  </div>
+
+  <div class="note notetag">
+    <strong>Note:</strong>
+    <div class='inline'>
+<p>if neither `sample_volume` nor `operations` are provided, then all samples will be run using `DEFAULT_SAMPLE_VOLUME`</p>
+</div>
+  </div>
+
+<p class="note returns_void">This method returns an undefined value.</p>
 <p>Run the protocol defined by the kit</p>
 
 
@@ -1012,6 +1034,22 @@ $(document).ready(function() {
 <div class="tags">
   <p class="tag_title">Parameters:</p>
 <ul class="param">
+  
+    <li>
+      
+        <span class='name'>operations</span>
+      
+      
+        <span class='type'>(<tt>OperationList</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the operations to run</p>
+</div>
+      
+    </li>
   
     <li>
       
@@ -1038,33 +1076,45 @@ $(document).ready(function() {
       <pre class="lines">
 
 
-30
-31
-32
-33
-34
-35
-36
 37
 38
 39
 40
 41
-42</pre>
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'RNAExtractionKits.rb', line 30</span>
+      <pre class="code"><span class="info file"># File 'RNAExtractionKits.rb', line 37</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_run_kit_protocol'>run_kit_protocol</span><span class='lparen'>(</span><span class='label'>sample_volume:</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_run_rna_extraction_kit'>run_rna_extraction_kit</span><span class='lparen'>(</span><span class='label'>operations:</span> <span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='label'>sample_volume:</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_prepare_materials'>prepare_materials</span>
 
   <span class='id identifier rubyid_notes_on_handling'>notes_on_handling</span>
 
-  <span class='id identifier rubyid_lyse_samples'>lyse_samples</span><span class='lparen'>(</span><span class='label'>sample_volume:</span> <span class='id identifier rubyid_sample_volume'>sample_volume</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_sample_volume'>sample_volume</span>
+    <span class='id identifier rubyid_lyse_samples_constant_volume'>lyse_samples_constant_volume</span><span class='lparen'>(</span><span class='label'>sample_volume:</span> <span class='id identifier rubyid_sample_volume'>sample_volume</span><span class='rparen'>)</span>
+  <span class='kw'>elsif</span> <span class='id identifier rubyid_operations'>operations</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
+    <span class='id identifier rubyid_lyse_samples_variable_volume'>lyse_samples_variable_volume</span><span class='lparen'>(</span><span class='label'>operations:</span> <span class='id identifier rubyid_operations'>operations</span><span class='rparen'>)</span>
+  <span class='kw'>else</span>
+    <span class='id identifier rubyid_lyse_samples_constant_volume'>lyse_samples_constant_volume</span>
+  <span class='kw'>end</span>
 
-  <span class='id identifier rubyid_bind_to_columns'>bind_to_columns</span>
+  <span class='id identifier rubyid_bind_rna'>bind_rna</span>
 
-  <span class='id identifier rubyid_wash_columns'>wash_columns</span>
+  <span class='id identifier rubyid_wash_rna'>wash_rna</span>
 
   <span class='id identifier rubyid_elute_rna'>elute_rna</span>
 <span class='kw'>end</span></pre>
