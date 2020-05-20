@@ -11,7 +11,10 @@ module QIAampDSPViralRNAMiniKit
   NAME = 'QIAamp DSP Viral RNA Mini Kit'
 
   WASH_TUBE = "2 #{MILLILITERS} wash tube (WT)"
-  WASH_VOLUME = { qty: 500, units: MICROLITERS }.freeze
+
+  MIN_SAMPLE_VOLUME =     { qty: 140, units: MICROLITERS }.freeze
+  DEFAULT_SAMPLE_VOLUME = MIN_SAMPLE_VOLUME
+  WASH_VOLUME =           { qty: 500, units: MICROLITERS }.freeze
 
   def prepare_materials
     show do
@@ -52,7 +55,14 @@ module QIAampDSPViralRNAMiniKit
   end
 
   # @todo will we be working with a different sample volume for each operation?
-  def lyse_samples(sample_volume:)
+  # @todo make use_operations do this^
+  def lyse_samples_constant_volume(sample_volume: nil)
+    # TODO: Move this logic up to the calling method
+    if sample_volume[:qty] < MIN_SAMPLE_VOLUME[:qty]
+      msg = "Sample volume must be > #{qty_display(MIN_SAMPLE_VOLUME)}"
+      raise ProtocolError, msg
+    end
+    sample_volume ||= DEFAULT_SAMPLE_VOLUME
     buffer_volume = buffer_avl_volume(sample_volume: sample_volume)
     ethanol_volume = buffer_volume
 
@@ -66,8 +76,8 @@ module QIAampDSPViralRNAMiniKit
       # require 1120 μl Buffer AVL–carrier RNA) and use a larger tube.
       note "Add #{qty_display(sample_volume)} plasma, serum, urine, " \
         'cell-culture supernatant, or cell- free body fluid to the ' \
-        'Buffer AVL–carrier RNA in the lysis tube (LT). Mix by ' \
-        "pulse-vortexing for 15 #{SECONDS}."
+        'Buffer AVL–carrier RNA in the lysis tube (LT).'
+      note "Mix by pulse-vortexing for 15 #{SECONDS}."
       warning 'To ensure efficient lysis, it is essential that the sample ' \
         'is mixed thoroughly with Buffer AVL to yield a homogeneous solution'
       # Frozen samples that have only been thawed once can also be used.
@@ -94,7 +104,13 @@ module QIAampDSPViralRNAMiniKit
     end
   end
 
-  def bind_to_columns
+  def lyse_samples_variable_volume(operations:)
+    msg = 'Method lyse_samples_variable_volume is not supported for ' \
+      'QIAamp DSP Viral RNA Mini Kit'
+    raise ProtocolError, msg
+  end
+
+  def bind_rna
     show do
       title 'Add Samples to Columns'
 
@@ -119,7 +135,7 @@ module QIAampDSPViralRNAMiniKit
     end
   end
 
-  def wash_columns
+  def wash_rna
     show do
       title 'Wash with Buffer AW1'
 
@@ -160,6 +176,8 @@ module QIAampDSPViralRNAMiniKit
       note "Centrifuge at approximately 6000 #{TIMES_G} for ≥1 #{MINUTES}."
     end
   end
+
+  private
 
   def buffer_avl_volume(sample_volume:)
     unless sample_volume[:units] == MICROLITERS
