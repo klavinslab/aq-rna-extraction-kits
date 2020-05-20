@@ -10,6 +10,9 @@ module TestRNAExtractionKit
 
   NAME = 'Test RNA Extraction Kit'
 
+  MIN_SAMPLE_VOLUME =     { qty: 140, units: MICROLITERS }.freeze
+  DEFAULT_SAMPLE_VOLUME = MIN_SAMPLE_VOLUME
+
   def prepare_materials
     show do
       title 'Things to do before starting'
@@ -22,21 +25,29 @@ module TestRNAExtractionKit
     end
   end
 
-  def lyse_samples(sample_volume:)
+  def lyse_samples_constant_volume(sample_volume:)
     show do
-      title 'Lyse Samples'
+      title 'Lyse Samples Constant Volume'
 
       note "Sample volume: #{qty_display(sample_volume)}"
     end
   end
 
-  def bind_to_columns
+  def lyse_samples_variable_volume(operations:)
+    show do
+      title 'Lyse Samples Variable Volume'
+
+      operations.each { |op| note "Sample volume: #{sample_volume(op)}" }
+    end
+  end
+
+  def bind_rna
     show do
       title 'Add Samples to Columns'
     end
   end
 
-  def wash_columns
+  def wash_rna
     show do
       title 'Wash with Buffer'
     end
@@ -46,6 +57,12 @@ module TestRNAExtractionKit
     show do
       title 'Elute RNA'
     end
+  end
+
+  private
+
+  def sample_volume(operation)
+    operation.input('Options').val.fetch(:sample_volume)
   end
 
 end
