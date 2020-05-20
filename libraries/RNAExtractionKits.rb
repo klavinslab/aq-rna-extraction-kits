@@ -24,19 +24,32 @@ module RNAExtractionKits
 
   # Run the protocol defined by the kit
   #
+  # @note if `sample_volume` is provided, then all samples will be run
+  #   using that volume of sample
+  # @note if `sample_volume` is not provided, but `operations` are, then
+  #   the protocol will look for sample_volumes assigned to the `Operations`
+  # @note if neither `sample_volume` nor `operations` are provided, then
+  #   all samples will be run using `DEFAULT_SAMPLE_VOLUME`
+  # @param operations [OperationList] the operations to run
   # @param sample_volume [Hash] the volume as a Hash in the format
   #   `{ qty: 140, units: MICROLITERS }`
   # @return [void]
-  def run_kit_protocol(sample_volume:)
+  def run_rna_extraction_kit(operations: [], sample_volume: nil)
     prepare_materials
 
     notes_on_handling
 
-    lyse_samples(sample_volume: sample_volume)
+    if sample_volume
+      lyse_samples_constant_volume(sample_volume: sample_volume)
+    elsif operations.present?
+      lyse_samples_variable_volume(operations: operations)
+    else
+      lyse_samples_constant_volume
+    end
 
-    bind_to_columns
+    bind_rna
 
-    wash_columns
+    wash_rna
 
     elute_rna
   end
