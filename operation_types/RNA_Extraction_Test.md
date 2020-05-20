@@ -44,8 +44,7 @@ class Protocol
   #
   def default_job_params
     {
-      rna_extraction_kit: TestRNAExtractionKit::NAME,
-      sample_volume: { qty: 140, units: MICROLITERS }
+      rna_extraction_kit: QIAampDSPViralRNAMiniKit::NAME
     }
   end
 
@@ -55,7 +54,10 @@ class Protocol
   #     input of type JSON and named `Options`.
   #
   def default_operation_params
-    {}
+    {
+      sample_volume: { qty: 200, units: MICROLITERS }
+
+    }
   end
 
   ########## MAIN ##########
@@ -63,9 +65,10 @@ class Protocol
   def main
     setup_test_options(operations: operations) if debug
 
-    @job_params = update_job_params(
+    @job_params = update_all_params(
       operations: operations,
-      default_job_params: default_job_params
+      default_job_params: default_job_params,
+      default_operation_params: default_operation_params
     )
     return {} if operations.errored.any?
 
@@ -73,11 +76,20 @@ class Protocol
 
     set_kit(name: @job_params[:rna_extraction_kit])
 
-    run_kit_protocol(sample_volume: @job_params[:sample_volume])
+    sample_volumes = operation_sample_volumes(operations)
+    if sample_volumes.uniq.length == 1
+      run_rna_extraction_kit(sample_volume: sample_volumes.first)
+    else
+      run_rna_extraction_kit(operations: operations)
+    end
 
     operations.store
 
     {}
+  end
+
+  def operation_sample_volumes(operations)
+    operations.map { |op| op.temporary[:options][:sample_volume] }
   end
 end
 
