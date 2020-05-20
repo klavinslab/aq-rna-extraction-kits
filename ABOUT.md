@@ -1,4 +1,4 @@
-# Aquarium RNA Extraction Kits, version 0.0.1
+# Aquarium RNA Extraction Kits, version 0.0.2
 
 Modules to provide `show` methods for working with RNA extraction kits [[Download](aq-rna-extraction-kits.aq)] [[Github Repo](https://github.com/klavinslab/aq-rna-extraction-kits)]
 
