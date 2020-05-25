@@ -19,7 +19,7 @@ module QIAampDSPViralRNAMiniKit
   def prepare_materials
     show do
       title 'Things to do before starting'
-      bullet "Equilibrate samples to room temperature (15–25#{DEGREES_C})"
+      bullet "Equilibrate samples to room temperature (15-25#{DEGREES_C})"
       bullet 'Equilibrate Buffer AVE to room temperature'
       # TODO: Need some way of indicating this has been done
       bullet 'Check that Buffer AW1 and Buffer AW2 have been prepared ' \
@@ -71,17 +71,17 @@ module QIAampDSPViralRNAMiniKit
 
       note "Pipet #{qty_display(buffer_volume)} of prepared Buffer AVL " \
         'containing carrier RNA into a lysis tube (LT).'
-      # If the sample volume is larger than 140 μl, increase the amount of
-      # Buffer AVL–carrier RNA proportionally (e.g., a 280 μl sample will
-      # require 1120 μl Buffer AVL–carrier RNA) and use a larger tube.
+      # If the sample volume is larger than 140 ul, increase the amount of
+      # Buffer AVL-carrier RNA proportionally (e.g., a 280 ul sample will
+      # require 1120 ul Buffer AVL-carrier RNA) and use a larger tube.
       note "Add #{qty_display(sample_volume)} plasma, serum, urine, " \
         'cell-culture supernatant, or cell- free body fluid to the ' \
-        'Buffer AVL–carrier RNA in the lysis tube (LT).'
+        'Buffer AVL-carrier RNA in the lysis tube (LT).'
       note "Mix by pulse-vortexing for 15 #{SECONDS}."
       warning 'To ensure efficient lysis, it is essential that the sample ' \
         'is mixed thoroughly with Buffer AVL to yield a homogeneous solution'
       # Frozen samples that have only been thawed once can also be used.
-      note "Incubate at room temperature (15–25#{DEGREES_C}) for 10 #{MINUTES}"
+      note "Incubate at room temperature (15-25#{DEGREES_C}) for 10 #{MINUTES}"
     end
 
     show do
@@ -89,16 +89,16 @@ module QIAampDSPViralRNAMiniKit
 
       note 'Briefly centrifuge the lysis tube (LT) to remove drops from ' \
         'the inside of the lid.'
-      note "Add #{qty_display(ethanol_volume)} ethanol (96–100%) to the " \
-        'sample, and mix by pulse-vortexing for ≥15 seconds. ' \
+      note "Add #{qty_display(ethanol_volume)} ethanol (96-100%) to the " \
+        'sample, and mix by pulse-vortexing for >15 seconds. ' \
         'After mixing, briefly centrifuge the tube to remove drops from ' \
         'inside the lid.'
       # Only ethanol should be used since other alcohols may result in
       # reduced RNA yield and purity. Do not use denatured alcohol, which
       # contains other substances such as methanol or methylethylketone.
-      # If the sample volume is greater than 140 μl, increase the amount of
-      # ethanol proportionally (e.g., a 280 μl sample will require
-      # 1120 μl of ethanol). In order to ensure efficient binding, it is
+      # If the sample volume is greater than 140 ul, increase the amount of
+      # ethanol proportionally (e.g., a 280 ul sample will require
+      # 1120 ul of ethanol). In order to ensure efficient binding, it is
       # essential that the sample is mixed thoroughly with the ethanol
       # to yield a homogeneous solution.
     end
@@ -117,7 +117,7 @@ module QIAampDSPViralRNAMiniKit
       note 'Carefully apply 630 #{MICROLITERS} of the solution from step 5 to the ' \
         'QIAamp Mini spin column (in a wash tube (WT)) without wetting the rim.'
       note "Close the cap, and centrifuge at approximately 6000 #{TIMES_G} " \
-        "for ≥1 #{MINUTES}. Place the QIAamp Mini spin column into a clean" \
+        "for >1 #{MINUTES}. Place the QIAamp Mini spin column into a clean" \
         "#{WASH_TUBE}, and discard the wash tube containing " \
         'the filtrate.'
       warning 'Close each spin column in order to avoid cross-contamination ' \
@@ -142,11 +142,11 @@ module QIAampDSPViralRNAMiniKit
       note 'Carefully open the QIAamp Mini spin column, and add ' \
         "#{qty_display(WASH_VOLUME)} Buffer AW1."
       note 'Close the cap, and centrifuge at approximately ' \
-        "6000 #{TIMES_G} for ≥1 #{MINUTES}."
+        "6000 #{TIMES_G} for >1 #{MINUTES}."
       note "Place the QIAamp Mini spin column in a clean #{WASH_TUBE}, " \
         'and discard the wash tube containing the filtrate.'
       # It is not necessary to increase the volume of Buffer AW1 even if the
-      # original sample volume was larger than 140 μl.
+      # original sample volume was larger than 140 ul.
     end
 
     show do
@@ -172,8 +172,8 @@ module QIAampDSPViralRNAMiniKit
       note 'Discard the wash tube containing the filtrate.'
       note 'Carefully open the QIAamp Mini spin column and add ' \
         "60 #{MICROLITERS} of Buffer AVE equilibrated to room temperature."
-      note "Close the cap, and incubate at room temperature for ≥1 #{MINUTES}."
-      note "Centrifuge at approximately 6000 #{TIMES_G} for ≥1 #{MINUTES}."
+      note "Close the cap, and incubate at room temperature for >1 #{MINUTES}."
+      note "Centrifuge at approximately 6000 #{TIMES_G} for >1 #{MINUTES}."
     end
   end
 
