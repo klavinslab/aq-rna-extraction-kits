@@ -44,7 +44,7 @@ class Protocol
   #
   def default_job_params
     {
-      rna_extraction_kit: QIAampDSPViralRNAMiniKit::NAME
+      rna_extraction_kit: TestRNAExtractionKit::NAME
     }
   end
 
