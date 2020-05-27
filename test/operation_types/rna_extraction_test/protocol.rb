@@ -3,7 +3,7 @@
 needs 'Standard Libs/PlanParams'
 needs 'Standard Libs/Units'
 needs 'Standard Libs/Debug'
-needs 'RNAExtractionKits/RNAExtractionKits'
+needs 'RNA Extraction Kits/RNAExtractionKits'
 
 # Test Extract RNA Protocol
 #
@@ -24,7 +24,8 @@ class Protocol
   #
   def default_job_params
     {
-      rna_extraction_kit: TestRNAExtractionKit::NAME
+      rna_extraction_kit: TestRNAExtractionKit::NAME,
+      expert: false
     }
   end
 
@@ -35,7 +36,7 @@ class Protocol
   #
   def default_operation_params
     {
-      sample_volume: { qty: 200, units: MICROLITERS }
+      sample_volume: { qty: 300, units: MICROLITERS }
 
     }
   end
@@ -58,9 +59,15 @@ class Protocol
 
     sample_volumes = operation_sample_volumes(operations)
     if sample_volumes.uniq.length == 1
-      run_rna_extraction_kit(sample_volume: sample_volumes.first)
+      run_rna_extraction_kit(
+        sample_volume: sample_volumes.first,
+        expert: @job_params[:expert]
+      )
     else
-      run_rna_extraction_kit(operations: operations)
+      run_rna_extraction_kit(
+        operations: operations,
+        expert: @job_params[:expert]
+      )
     end
 
     operations.store
