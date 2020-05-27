@@ -1,26 +1,12 @@
 # frozen_string_literal: true
 
-needs 'RNAExtractionKits/TestRNAExtractionKit'
-needs 'RNAExtractionKits/QIAampDSPViralRNAMiniKit'
+needs 'RNA Extraction Kits/SupportedRNAExtractionKits'
 
 # Module for switching among several different RNA extraction kits
 #
 # @author Devin Strickland <strcklnd@uw.edu>
 module RNAExtractionKits
-  # Extend the module with the correct methods based on the kit name
-  #
-  # @param name [String] the name of the kit
-  # @return [void]
-  def set_kit(name:)
-    case name
-    when TestRNAExtractionKit::NAME
-      extend TestRNAExtractionKit
-    when QIAampDSPViralRNAMiniKit::NAME
-      extend QIAampDSPViralRNAMiniKit
-    else
-      raise ProtocolError, "Unrecognized RNA Extraction Kit: #{name}"
-    end
-  end
+  include SupportedRNAExtractionKits
 
   # Run the protocol defined by the kit
   #
@@ -34,10 +20,10 @@ module RNAExtractionKits
   # @param sample_volume [Hash] the volume as a Hash in the format
   #   `{ qty: 140, units: MICROLITERS }`
   # @return [void]
-  def run_rna_extraction_kit(operations: [], sample_volume: nil)
+  def run_rna_extraction_kit(operations: [], sample_volume: nil, expert: false)
     prepare_materials
 
-    notes_on_handling
+    notes_on_handling unless expert
 
     if sample_volume
       lyse_samples_constant_volume(sample_volume: sample_volume)
