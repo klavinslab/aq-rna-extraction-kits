@@ -37,7 +37,8 @@ module QiagenRNeasyMiniKit
 
   # @note adapted from `QIAampDSPViralRNAMiniKit`
   # @todo determine how much of the detail to keep or change
-  def lyse_samples_constant_volume(sample_volume: DEFAULT_SAMPLE_VOLUME)
+  def lyse_samples_constant_volume(sample_volume: DEFAULT_SAMPLE_VOLUME,
+                                   expert: false)
     # TODO: Move this logic up to the calling method
     if sample_volume[:qty] < MIN_SAMPLE_VOLUME[:qty]
       msg = "Sample volume must be > #{qty_display(MIN_SAMPLE_VOLUME)}"
@@ -82,7 +83,7 @@ module QiagenRNeasyMiniKit
     end
   end
 
-  def lyse_samples_variable_volume(operations:)
+  def lyse_samples_variable_volume(operations:, expert: false)
     msg = 'Method lyse_samples_variable_volume is not supported for ' \
       'Qiagen RNeasy Mini Kit'
     raise ProtocolError, msg
@@ -90,7 +91,8 @@ module QiagenRNeasyMiniKit
 
   # @note adapted from `QIAampDSPViralRNAMiniKit`
   # @todo determine how much of the detail to keep or change
-  def bind_rna(operations: [], sample_volume: DEFAULT_SAMPLE_VOLUME)
+  def bind_rna(operations: [], sample_volume: DEFAULT_SAMPLE_VOLUME,
+               expert: false)
     loading_volume, n_loads = loading_volume(sample_volume: sample_volume)
 
     show do
@@ -117,7 +119,7 @@ module QiagenRNeasyMiniKit
     end
   end
 
-  def wash_rna(operations: [])
+  def wash_rna(operations: [], expert: false)
     show do
       title 'Wash with Buffer RW1'
 
@@ -161,7 +163,7 @@ module QiagenRNeasyMiniKit
     end
   end
 
-  def elute_rna(operations: [])
+  def elute_rna(operations: [], expert: false)
     show do
       title 'Elute RNA'
 

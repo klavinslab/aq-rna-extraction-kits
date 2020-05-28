@@ -26,17 +26,21 @@ module RNAExtractionKits
     notes_on_handling unless expert
 
     if sample_volume
-      lyse_samples_constant_volume(sample_volume: sample_volume)
+      lyse_samples_constant_volume(sample_volume: sample_volume, expert: expert)
     elsif operations.present?
-      lyse_samples_variable_volume(operations: operations)
+      lyse_samples_variable_volume(operations: operations, expert: expert)
     else
-      lyse_samples_constant_volume()
+      lyse_samples_constant_volume(expert: expert)
     end
 
-    bind_rna(operations: operations)
+    bind_rna(
+      operations: operations,
+      sample_volume: sample_volume,
+      expert: expert
+    )
 
-    wash_rna(operations: operations)
+    wash_rna(operations: operations, expert: expert)
 
-    elute_rna(operations: operations)
+    elute_rna(operations: operations, expert: expert)
   end
 end
