@@ -90,7 +90,7 @@ module QiagenRNeasyMiniKit
 
   # @note adapted from `QIAampDSPViralRNAMiniKit`
   # @todo determine how much of the detail to keep or change
-  def bind_rna(sample_volume: DEFAULT_SAMPLE_VOLUME)
+  def bind_rna(operations: [], sample_volume: DEFAULT_SAMPLE_VOLUME)
     loading_volume, n_loads = loading_volume(sample_volume: sample_volume)
 
     show do
@@ -117,7 +117,7 @@ module QiagenRNeasyMiniKit
     end
   end
 
-  def wash_rna
+  def wash_rna(operations: [])
     show do
       title 'Wash with Buffer RW1'
 
@@ -161,7 +161,7 @@ module QiagenRNeasyMiniKit
     end
   end
 
-  def elute_rna
+  def elute_rna(operations: [])
     show do
       title 'Elute RNA'
 

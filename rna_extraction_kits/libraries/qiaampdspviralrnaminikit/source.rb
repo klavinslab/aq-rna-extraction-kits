@@ -51,6 +51,7 @@ module QIAampDSPViralRNAMiniKit
     show do
       title 'Lyse Samples'
 
+      # TODO: Add Pipettor module
       note "Pipet #{qty_display(buffer_volume)} of prepared Buffer AVL " \
         'containing carrier RNA into a lysis tube (LT).'
       # If the sample volume is larger than 140 ul, increase the amount of
@@ -92,13 +93,13 @@ module QIAampDSPViralRNAMiniKit
     raise ProtocolError, msg
   end
 
-  def bind_rna(sample_volume: DEFAULT_SAMPLE_VOLUME)
+  def bind_rna(operations: [], sample_volume: DEFAULT_SAMPLE_VOLUME)
     loading_volume, n_loads = loading_volume(sample_volume: sample_volume)
 
     show do
       title 'Add Samples to Columns'
 
-      note "Carefully apply #{qty_diaplay(loading_volume)} of the " \
+      note "Carefully apply #{qty_display(loading_volume)} of the " \
         "sample solution to the #{COLUMN_LONG} (in a #{WASH_TUBE_LONG}) " \
         'without wetting the rim.'
       note "Close the cap, and centrifuge at #{CENTRIFUGE_SPEED} " \
@@ -120,7 +121,7 @@ module QIAampDSPViralRNAMiniKit
     end
   end
 
-  def wash_rna
+  def wash_rna(operations: [])
     show do
       title 'Wash with Buffer AW1'
 
@@ -151,7 +152,7 @@ module QIAampDSPViralRNAMiniKit
     end
   end
 
-  def elute_rna
+  def elute_rna(operations: [])
     show do
       title 'Elute RNA'
 

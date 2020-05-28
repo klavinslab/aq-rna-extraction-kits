@@ -41,19 +41,19 @@ module TestRNAExtractionKit
     end
   end
 
-  def bind_rna
+  def bind_rna(operations: [])
     show do
       title 'Add Samples to Columns'
     end
   end
 
-  def wash_rna
+  def wash_rna(operations: [])
     show do
       title 'Wash with Buffer'
     end
   end
 
-  def elute_rna
+  def elute_rna(operations: [])
     show do
       title 'Elute RNA'
     end

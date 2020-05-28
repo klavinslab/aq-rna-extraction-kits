@@ -30,13 +30,13 @@ module RNAExtractionKits
     elsif operations.present?
       lyse_samples_variable_volume(operations: operations)
     else
-      lyse_samples_constant_volume
+      lyse_samples_constant_volume()
     end
 
-    bind_rna
+    bind_rna(operations: operations)
 
-    wash_rna
+    wash_rna(operations: operations)
 
-    elute_rna
+    elute_rna(operations: operations)
   end
 end
