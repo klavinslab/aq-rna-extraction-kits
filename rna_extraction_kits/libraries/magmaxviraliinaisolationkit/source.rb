@@ -33,7 +33,7 @@ module MagMAXViralIINAIsolationKit
   VOL_SAMPLE = { qty: 200, units: MICROLITERS }.freeze
   VOL_WB = { qty: 500, units: MICROLITERS }.freeze # wash buffer
 
-  # 265µL(buffer) + 10µL(beads)=275µL per well
+  # 265uL(buffer) + 10uL(beads)=275uL per well
   # Include 10% overage when making the Binding Bead Mix
   # for use with multiple reactions
   def prepare_materials
@@ -59,7 +59,7 @@ module MagMAXViralIINAIsolationKit
 
   def notes_on_handling; end
 
-  def lyse_samples_constant_volume(sample_volume:)
+  def lyse_samples_constant_volume(sample_volume:, expert:)
     make_sample_plate(sample_volume: sample_volume)
     add_reagents_and_beads
     shake(time: TIME2, covered: true)
@@ -131,9 +131,9 @@ module MagMAXViralIINAIsolationKit
     end
   end
 
-  def bind_rna; end
+  def bind_rna(operations:, sample_volume:, expert:); end
 
-  def wash_rna
+  def wash_rna(operations:, expert:)
     wash_beads(reagent: 'Wash Buffer', vol: VOL_WB[:qty])
     wash_beads(reagent: '80% Ethanol', vol: VOL_WB[:qty]) # same as wash buffer
     wash_beads(reagent: '80% Ethanol', vol: VOL_ETHANOL[:qty])
@@ -165,13 +165,13 @@ module MagMAXViralIINAIsolationKit
     end
   end
 
-  def elute_rna(ops:)
+  def elute_rna(operations:, expert:)
     add_elution_solution
     shake(time: TIME5, covered: true)
     incubate(time: TIME10)
     shake(time: TIME5, covered: true)
     collect_beads(time: TIME3)
-    make_qpcr_plate(operations: ops)
+    make_qpcr_plate(ops: operations)
   end
 
   def add_elution_solution

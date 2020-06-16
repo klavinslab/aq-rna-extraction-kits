@@ -3,6 +3,7 @@
 needs 'RNA Extraction Kits/TestRNAExtractionKit'
 needs 'RNA Extraction Kits/QIAampDSPViralRNAMiniKit'
 needs 'RNA Extraction Kits/QiagenRNeasyMiniKit'
+needs 'RNA Extraction Kits/MagMAXViralIINAIsolationKit'
 
 # Module for enumerating supported RNA extraction kits
 #
