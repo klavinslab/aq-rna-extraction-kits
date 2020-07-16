@@ -59,11 +59,4 @@ module TestRNAExtractionKit
       title 'Elute RNA'
     end
   end
-
-  private
-
-  def sample_volume(operation)
-    operation.input('Options').val.fetch(:sample_volume)
-  end
-
 end
