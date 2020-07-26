@@ -25,7 +25,7 @@ module TestRNAExtractionKit
     end
   end
 
-  def lyse_samples_constant_volume(sample_volume:)
+  def lyse_samples_constant_volume(sample_volume:, expert: false)
     show do
       title 'Lyse Samples Constant Volume'
 
@@ -33,7 +33,7 @@ module TestRNAExtractionKit
     end
   end
 
-  def lyse_samples_variable_volume(operations:)
+  def lyse_samples_variable_volume(operations:, expert: false)
     show do
       title 'Lyse Samples Variable Volume'
 
@@ -41,28 +41,22 @@ module TestRNAExtractionKit
     end
   end
 
-  def bind_rna
+  def bind_rna(operations: [], sample_volume: DEFAULT_SAMPLE_VOLUME,
+               expert: false)
     show do
       title 'Add Samples to Columns'
     end
   end
 
-  def wash_rna
+  def wash_rna(operations: [], expert: false)
     show do
       title 'Wash with Buffer'
     end
   end
 
-  def elute_rna
+  def elute_rna(operations: [], expert: false)
     show do
       title 'Elute RNA'
     end
   end
-
-  private
-
-  def sample_volume(operation)
-    operation.input('Options').val.fetch(:sample_volume)
-  end
-
 end
