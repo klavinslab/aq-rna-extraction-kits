@@ -10,6 +10,8 @@ Modules to provide `show` methods for working with RNA extraction kits [[Downloa
 
 ### Authors
   - Devin Strickland, University of Washington
+  - Dany Fu, Boston University
+  - Rita Chen, Boston University
 
 ### Acknowledgements
 
