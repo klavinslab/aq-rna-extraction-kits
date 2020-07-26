@@ -1,20 +1,23 @@
 # frozen_string_literal: true
 
-needs 'Standard Libs/Units'
+needs 'RNA Extraction Kits/QiagenRNAExtractionHelper'
 
 # Module for QIAamp DSP Viral RNA Mini Kit
 #
 # @author Devin Strickland <strcklnd@uw.edu>
 module QIAampDSPViralRNAMiniKit
-  include Units
+  include QiagenRNAExtractionHelper
 
   NAME = 'QIAamp DSP Viral RNA Mini Kit'
 
-  WASH_TUBE = "2 #{MILLILITERS} wash tube (WT)"
+  COLUMN_LONG = 'QIAamp Mini spin column'
 
   MIN_SAMPLE_VOLUME =     { qty: 140, units: MICROLITERS }.freeze
   DEFAULT_SAMPLE_VOLUME = MIN_SAMPLE_VOLUME
   WASH_VOLUME =           { qty: 500, units: MICROLITERS }.freeze
+
+  CENTRIFUGE_SPEED = { qty: 6000, units: TIMES_G }.freeze
+  CENTRIFUGE_TIME = { qty: 1, units: MINUTES }.freeze
 
   def prepare_materials
     show do
@@ -31,44 +34,25 @@ module QIAampDSPViralRNAMiniKit
   end
 
   def notes_on_handling
-    show do
-      title 'Handling of QIAamp Mini spin columns'
-
-      note 'Due to the sensitivity of nucleic acid amplification ' \
-        'technologies, the following precautions are necessary when handling ' \
-        'QIAamp Mini spin columns to avoid cross contamination between ' \
-        'sample preparations:'
-      bullet 'Carefully apply the sample or solution to the QIAamp Mini ' \
-        'spin column. Pipet the sample into the QIAamp Mini spin column ' \
-        'without wetting the rim of the column.'
-      bullet 'Always change pipet tips between liquid transfers. ' \
-        'We recommend the use of aerosol-barrier pipet tips.'
-      bullet 'Avoid touching the QIAamp Mini spin column membrane with ' \
-        'the pipet tip.'
-      bullet 'After all pulse-vortexing steps, briefly centrifuge the ' \
-       'microcentrifuge tubes to remove drops from the inside of the lids.'
-      bullet 'Open only one QIAamp Mini spin column at a time, and take care ' \
-        'to avoid generating aerosols.'
-      bullet 'Wear gloves throughout the entire procedure. In case of ' \
-        'contact between gloves and sample, change gloves immediately.'
-    end
+    qiagen_notes_on_handling
   end
 
   # @todo will we be working with a different sample volume for each operation?
   # @todo make use_operations do this^
-  def lyse_samples_constant_volume(sample_volume: nil)
+  def lyse_samples_constant_volume(sample_volume: DEFAULT_SAMPLE_VOLUME,
+                                   expert: false)
     # TODO: Move this logic up to the calling method
     if sample_volume[:qty] < MIN_SAMPLE_VOLUME[:qty]
       msg = "Sample volume must be > #{qty_display(MIN_SAMPLE_VOLUME)}"
       raise ProtocolError, msg
     end
-    sample_volume ||= DEFAULT_SAMPLE_VOLUME
-    buffer_volume = buffer_avl_volume(sample_volume: sample_volume)
-    ethanol_volume = buffer_volume
+    buffer_volume = lysis_buffer_volume(sample_volume: sample_volume)
+    ethanol_volume = ethanol_volume(sample_volume: sample_volume)
 
     show do
       title 'Lyse Samples'
 
+      # TODO: Add Pipettor module
       note "Pipet #{qty_display(buffer_volume)} of prepared Buffer AVL " \
         'containing carrier RNA into a lysis tube (LT).'
       # If the sample volume is larger than 140 ul, increase the amount of
@@ -104,22 +88,26 @@ module QIAampDSPViralRNAMiniKit
     end
   end
 
-  def lyse_samples_variable_volume(operations:)
+  def lyse_samples_variable_volume(operations:, expert: false)
     msg = 'Method lyse_samples_variable_volume is not supported for ' \
       'QIAamp DSP Viral RNA Mini Kit'
     raise ProtocolError, msg
   end
 
-  def bind_rna
+  def bind_rna(operations: [], sample_volume: DEFAULT_SAMPLE_VOLUME,
+               expert: false)
+    loading_volume, n_loads = loading_volume(sample_volume: sample_volume)
+
     show do
       title 'Add Samples to Columns'
 
-      note 'Carefully apply 630 #{MICROLITERS} of the solution from step 5 to the ' \
-        'QIAamp Mini spin column (in a wash tube (WT)) without wetting the rim.'
-      note "Close the cap, and centrifuge at approximately 6000 #{TIMES_G} " \
-        "for >1 #{MINUTES}. Place the QIAamp Mini spin column into a clean" \
-        "#{WASH_TUBE}, and discard the wash tube containing " \
-        'the filtrate.'
+      note "Carefully apply #{qty_display(loading_volume)} of the " \
+        "sample solution to the #{COLUMN_LONG} (in a #{WASH_TUBE_LONG}) " \
+        'without wetting the rim.'
+      note "Close the cap, and centrifuge at #{CENTRIFUGE_SPEED} " \
+        "for #{CENTRIFUGE_TIME}. Place the #{COLUMN_SHORT} into a clean" \
+        "#{WASH_TUBE_SHORT}, and discard the old #{WASH_TUBE_SHORT} " \
+        'containing the filtrate.'
       warning 'Close each spin column in order to avoid cross-contamination ' \
         'during centrifugation.'
       # Centrifugation is performed at approximately 6000 x g in order to limit
@@ -129,62 +117,77 @@ module QIAampDSPViralRNAMiniKit
       # until all of the solution has passed through.
       separator
 
-      note 'Carefully open the QIAamp Mini spin column, and repeat step 6.'
-      note 'Repeat this step until all of the lysate has been loaded onto ' \
-        'the spin column.'
+      # Harmonize handling of repeats with RNeasy kit
+      note "Carefully open the #{COLUMN_SHORT}, and repeat the loading until " \
+        'all of the lysate has been loaded onto the spin column.'
     end
   end
 
-  def wash_rna
+  def wash_rna(operations: [], expert: false)
     show do
       title 'Wash with Buffer AW1'
 
-      note 'Carefully open the QIAamp Mini spin column, and add ' \
+      note "Carefully open the #{COLUMN_LONG}, and add " \
         "#{qty_display(WASH_VOLUME)} Buffer AW1."
-      note 'Close the cap, and centrifuge at approximately ' \
-        "6000 #{TIMES_G} for >1 #{MINUTES}."
-      note "Place the QIAamp Mini spin column in a clean #{WASH_TUBE}, " \
-        'and discard the wash tube containing the filtrate.'
+      note 'Close the cap, and centrifuge at ' \
+        "#{CENTRIFUGE_SPEED} for #{CENTRIFUGE_TIME}."
+      note "Place the #{COLUMN_SHORT} in a clean #{WASH_TUBE_LONG}, " \
+        "and discard the #{WASH_TUBE_SHORT} containing the filtrate."
       # It is not necessary to increase the volume of Buffer AW1 even if the
       # original sample volume was larger than 140 ul.
     end
 
     show do
-      title 'Wash with Buffer AW1'
+      title 'Wash with Buffer AW2'
 
-      note 'Carefully open the QIAamp Mini spin column, and add ' \
+      note "Carefully open the #{COLUMN_LONG}, and add " \
         "#{qty_display(WASH_VOLUME)} Buffer AW2."
+      # This centrifuge speed is meant to be different
       note 'Close the cap and centrifuge at full speed ' \
         "(approximately 20,000 #{TIMES_G}) for 3 #{MINUTES}."
       separator
 
-      note "Place the QIAamp Mini spin column in a new #{WASH_TUBE}, " \
-        'and discard the wash tube containing the filtrate. '
+      note "Place the #{COLUMN_SHORT} in a new #{WASH_TUBE_LONG}, " \
+        "and discard the #{WASH_TUBE_SHORT} containing the filtrate."
+      # This centrifuge speed is meant to be different
       note "Centrifuge at full speed for 1 #{MINUTES}."
     end
   end
 
-  def elute_rna
+  def elute_rna(operations: [], expert: false)
     show do
       title 'Elute RNA'
 
-      note 'Place the QIAamp Mini spin column in a clean elution tube (ET).'
+      note "Place the #{COLUMN_LONG} in a clean #{ELUTION_TUBE_LONG}."
       note 'Discard the wash tube containing the filtrate.'
-      note 'Carefully open the QIAamp Mini spin column and add ' \
+      note "Carefully open the #{COLUMN_SHORT} and add " \
         "60 #{MICROLITERS} of Buffer AVE equilibrated to room temperature."
       note "Close the cap, and incubate at room temperature for >1 #{MINUTES}."
-      note "Centrifuge at approximately 6000 #{TIMES_G} for >1 #{MINUTES}."
+      note "Centrifuge at #{CENTRIFUGE_SPEED} " \
+        "for #{CENTRIFUGE_TIME}."
     end
   end
 
   private
 
-  def buffer_avl_volume(sample_volume:)
+  def lysis_buffer_volume(sample_volume:)
     unless sample_volume[:units] == MICROLITERS
       raise ProtocolError, "Parameter :sample_volume must be in #{MICROLITERS}"
     end
 
     qty = sample_volume[:qty] * 560 / 140
     { qty: qty, units: MICROLITERS }
+  end
+
+  def ethanol_volume(sample_volume:)
+    qty = lysis_buffer_volume(sample_volume: sample_volume)
+    { qty: qty, units: MICROLITERS }
+  end
+
+  # TODO: Is this right?
+  def loading_volume(sample_volume:)
+    qty = 630
+    n_loads = 2
+    [{ qty: qty, units: MICROLITERS }, n_loads]
   end
 end
