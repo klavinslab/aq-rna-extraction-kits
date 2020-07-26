@@ -47,14 +47,44 @@ var config = {
 
           
             {
+              name: 'MagMAXViralIINAIsolationKit',
+              path: 'libraries/MagMAXViralIINAIsolationKit' + '.html',
+              type: "local-webpage"
+            },
+          
+            {
               name: 'QIAampDSPViralRNAMiniKit',
               path: 'libraries/QIAampDSPViralRNAMiniKit' + '.html',
               type: "local-webpage"
             },
           
             {
+              name: 'QiagenRNAExtractionHelper',
+              path: 'libraries/QiagenRNAExtractionHelper' + '.html',
+              type: "local-webpage"
+            },
+          
+            {
+              name: 'QiagenRNeasyMiniKit',
+              path: 'libraries/QiagenRNeasyMiniKit' + '.html',
+              type: "local-webpage"
+            },
+          
+            {
+              name: 'RNAExtractionHelper',
+              path: 'libraries/RNAExtractionHelper' + '.html',
+              type: "local-webpage"
+            },
+          
+            {
               name: 'RNAExtractionKits',
               path: 'libraries/RNAExtractionKits' + '.html',
+              type: "local-webpage"
+            },
+          
+            {
+              name: 'SupportedRNAExtractionKits',
+              path: 'libraries/SupportedRNAExtractionKits' + '.html',
               type: "local-webpage"
             },
           
