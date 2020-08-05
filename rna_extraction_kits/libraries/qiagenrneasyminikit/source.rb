@@ -58,11 +58,11 @@ module QiagenRNeasyMiniKit
         "corresponding #{LYSIS_TUBE_SHORT}."
       note "Mix by pulse-vortexing each tube for 15 #{SECONDS}."
       # TODO: Should this be kept in?
-      # warning 'To ensure efficient lysis, it is essential that the sample is ' \
-      #   "mixed thoroughly with #{LYSIS_BUFFER} to yield a homogeneous solution"
+      warning 'To ensure efficient lysis, it is essential that the sample is ' \
+        "mixed thoroughly with #{LYSIS_BUFFER} to yield a homogeneous solution"
       # Frozen samples that have only been thawed once can also be used.
       # TODO: Should this be kept in?
-      # note "Incubate at room temperature (15-25#{DEGREES_C}) for 10 #{MINUTES}"
+      note "Incubate at room temperature (15-25#{DEGREES_C}) for 10 #{MINUTES}"
     end
 
     show do
@@ -104,11 +104,11 @@ module QiagenRNeasyMiniKit
       note "Get one #{COLUMN_LONG} for each sample, and copy the IDs " \
         "from the #{LYSIS_TUBE_LONG}s to the #{COLUMN_SHORT}s."
       note "Carefully apply #{qty_display(loading_volume)} of each sample " \
-        "solution to the corresponding #{COLUMN_SHORT} (in a wash tube (WT)) " \
-        'without wetting the rim.'
+        "solution to the corresponding #{COLUMN_SHORT} " \
+        "(in #{WASH_TUBE_LONG}s) without wetting the rim."
       note "Close the lids, and centrifuge for #{CENTRIFUGE_TIME_AND_SPEED}."
-      note "Place the #{COLUMN_SHORT}s into clean #{WASH_TUBE_LONG}s, and " \
-        'discard the wash tubes containing the filtrate.'
+      note "Place the #{COLUMN_SHORT}s into clean #{WASH_TUBE_SHORT}s, and " \
+        "discard the #{WASH_TUBE_SHORT}s containing the filtrate."
       warning 'Close each spin column in order to avoid cross-contamination ' \
         'during centrifugation.'
       # Centrifugation is performed at approximately 6000 x g in order to limit

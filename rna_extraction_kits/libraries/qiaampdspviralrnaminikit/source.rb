@@ -18,6 +18,8 @@ module QIAampDSPViralRNAMiniKit
 
   CENTRIFUGE_SPEED = { qty: 6000, units: TIMES_G }.freeze
   CENTRIFUGE_TIME = { qty: 1, units: MINUTES }.freeze
+  CENTRIFUGE_TIME_AND_SPEED = "#{Units.qty_display(CENTRIFUGE_TIME)} at " \
+    "#{Units.qty_display(CENTRIFUGE_SPEED)}"
 
   def prepare_materials
     show do
@@ -53,30 +55,34 @@ module QIAampDSPViralRNAMiniKit
       title 'Lyse Samples'
 
       # TODO: Add Pipettor module
+      note "Get one #{LYSIS_TUBE_LONG} for each sample, and copy the IDs " \
+        "from the samples to the #{LYSIS_TUBE_SHORT}s."
       note "Pipet #{qty_display(buffer_volume)} of prepared Buffer AVL " \
-        'containing carrier RNA into a lysis tube (LT).'
+        "(containing carrier RNA) into each #{LYSIS_TUBE_SHORT}."
       # If the sample volume is larger than 140 ul, increase the amount of
       # Buffer AVL-carrier RNA proportionally (e.g., a 280 ul sample will
       # require 1120 ul Buffer AVL-carrier RNA) and use a larger tube.
-      note "Add #{qty_display(sample_volume)} plasma, serum, urine, " \
-        'cell-culture supernatant, or cell- free body fluid to the ' \
-        'Buffer AVL-carrier RNA in the lysis tube (LT).'
+      note "Transfer #{qty_display(sample_volume)} of each sample to the " \
+        "corresponding #{LYSIS_TUBE_SHORT}."
+      # TODO: Should this be kept in?
       note "Mix by pulse-vortexing for 15 #{SECONDS}."
       warning 'To ensure efficient lysis, it is essential that the sample ' \
         'is mixed thoroughly with Buffer AVL to yield a homogeneous solution'
       # Frozen samples that have only been thawed once can also be used.
+      # TODO: Should this be kept in?
       note "Incubate at room temperature (15-25#{DEGREES_C}) for 10 #{MINUTES}"
     end
 
     show do
       title 'Add Ethanol'
 
-      note 'Briefly centrifuge the lysis tube (LT) to remove drops from ' \
-        'the inside of the lid.'
-      note "Add #{qty_display(ethanol_volume)} ethanol (96-100%) to the " \
+      note "Briefly centrifuge the #{LYSIS_TUBE_LONG}s to remove drops from " \
+        'the inside of the lids.'
+      # TODO: provision ethanol at beginning and use shorter name
+      note "Add #{qty_display(ethanol_volume)} ethanol (96-100%) to each " \
         'sample, and mix by pulse-vortexing for >15 seconds. ' \
-        'After mixing, briefly centrifuge the tube to remove drops from ' \
-        'inside the lid.'
+        'After mixing, briefly centrifuge the tubes to remove drops from ' \
+        'inside the lids.'
       # Only ethanol should be used since other alcohols may result in
       # reduced RNA yield and purity. Do not use denatured alcohol, which
       # contains other substances such as methanol or methylethylketone.
@@ -101,12 +107,14 @@ module QIAampDSPViralRNAMiniKit
     show do
       title 'Add Samples to Columns'
 
-      note "Carefully apply #{qty_display(loading_volume)} of the " \
-        "sample solution to the #{COLUMN_LONG} (in a #{WASH_TUBE_LONG}) " \
-        'without wetting the rim.'
-      note "Close the cap, and centrifuge at #{CENTRIFUGE_SPEED} " \
-        "for #{CENTRIFUGE_TIME}. Place the #{COLUMN_SHORT} into a clean" \
-        "#{WASH_TUBE_SHORT}, and discard the old #{WASH_TUBE_SHORT} " \
+      note "Get one #{COLUMN_LONG} for each sample, and copy the IDs " \
+        "from the #{LYSIS_TUBE_LONG}s to the #{COLUMN_SHORT}s."
+      note "Carefully apply #{qty_display(loading_volume)} of each sample " \
+        " solution to the corresponding #{COLUMN_SHORT} " \
+        "(in #{WASH_TUBE_LONG}s) without wetting the rim."
+      note "Close the lids, and centrifuge for #{CENTRIFUGE_TIME_AND_SPEED}." \
+        "Place the #{COLUMN_SHORT}s into clean" \
+        "#{WASH_TUBE_SHORT}s, and discard the old #{WASH_TUBE_SHORT}s " \
         'containing the filtrate.'
       warning 'Close each spin column in order to avoid cross-contamination ' \
         'during centrifugation.'
@@ -117,9 +125,9 @@ module QIAampDSPViralRNAMiniKit
       # until all of the solution has passed through.
       separator
 
-      # Harmonize handling of repeats with RNeasy kit
-      note "Carefully open the #{COLUMN_SHORT}, and repeat the loading until " \
-        'all of the lysate has been loaded onto the spin column.'
+      note "Carefully open the #{COLUMN_SHORT}s, and repeat the " \
+        "loading #{n_loads - 1} more times until all of the lysate has " \
+        "been loaded onto the #{COLUMN_SHORT}s."
     end
   end
 
@@ -129,10 +137,10 @@ module QIAampDSPViralRNAMiniKit
 
       note "Carefully open the #{COLUMN_LONG}, and add " \
         "#{qty_display(WASH_VOLUME)} Buffer AW1."
-      note 'Close the cap, and centrifuge at ' \
-        "#{CENTRIFUGE_SPEED} for #{CENTRIFUGE_TIME}."
-      note "Place the #{COLUMN_SHORT} in a clean #{WASH_TUBE_LONG}, " \
-        "and discard the #{WASH_TUBE_SHORT} containing the filtrate."
+        note 'Close the lids gently, and centrifuge for ' \
+          "#{CENTRIFUGE_TIME_AND_SPEED}."
+      note "Place each #{COLUMN_SHORT} into a clean #{WASH_TUBE_LONG}, " \
+        "and discard the #{WASH_TUBE_SHORT}s containing the filtrate."
       # It is not necessary to increase the volume of Buffer AW1 even if the
       # original sample volume was larger than 140 ul.
     end
@@ -140,15 +148,15 @@ module QIAampDSPViralRNAMiniKit
     show do
       title 'Wash with Buffer AW2'
 
-      note "Carefully open the #{COLUMN_LONG}, and add " \
+      note "Carefully open the #{COLUMN_LONG}s, and add " \
         "#{qty_display(WASH_VOLUME)} Buffer AW2."
       # This centrifuge speed is meant to be different
       note 'Close the cap and centrifuge at full speed ' \
         "(approximately 20,000 #{TIMES_G}) for 3 #{MINUTES}."
       separator
 
-      note "Place the #{COLUMN_SHORT} in a new #{WASH_TUBE_LONG}, " \
-        "and discard the #{WASH_TUBE_SHORT} containing the filtrate."
+      note "Place each #{COLUMN_SHORT} into a new #{WASH_TUBE_LONG}, " \
+        "and discard the #{WASH_TUBE_SHORT}s containing the filtrate."
       # This centrifuge speed is meant to be different
       note "Centrifuge at full speed for 1 #{MINUTES}."
     end
@@ -158,13 +166,12 @@ module QIAampDSPViralRNAMiniKit
     show do
       title 'Elute RNA'
 
-      note "Place the #{COLUMN_LONG} in a clean #{ELUTION_TUBE_LONG}."
-      note 'Discard the wash tube containing the filtrate.'
-      note "Carefully open the #{COLUMN_SHORT} and add " \
+      note "Place each #{COLUMN_LONG} into a clean #{ELUTION_TUBE_LONG}."
+      note "Discard the #{WASH_TUBE_SHORT}s containing the filtrate."
+      note "Carefully open the #{COLUMN_SHORT}s and add " \
         "60 #{MICROLITERS} of Buffer AVE equilibrated to room temperature."
       note "Close the cap, and incubate at room temperature for >1 #{MINUTES}."
-      note "Centrifuge at #{CENTRIFUGE_SPEED} " \
-        "for #{CENTRIFUGE_TIME}."
+      note "Centrifuge for #{CENTRIFUGE_TIME_AND_SPEED}."
     end
   end
 
@@ -180,7 +187,7 @@ module QIAampDSPViralRNAMiniKit
   end
 
   def ethanol_volume(sample_volume:)
-    qty = lysis_buffer_volume(sample_volume: sample_volume)
+    qty = lysis_buffer_volume(sample_volume: sample_volume)[:qty]
     { qty: qty, units: MICROLITERS }
   end
 
