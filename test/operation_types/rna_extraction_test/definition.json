@@ -1,9 +1,15 @@
 {
-  "id": 24,
+  "id": 19,
   "name": "RNA Extraction Test",
   "parent_class": "OperationType",
   "category": "Test",
   "inputs": [
+    {
+      "name": "Specimen",
+      "part": null,
+      "array": null,
+      "routing": "S"
+    },
     {
       "name": "Options",
       "part": null,
@@ -11,7 +17,14 @@
       "routing": null
     }
   ],
-  "outputs": [],
+  "outputs": [
+    {
+      "name": "Specimen",
+      "part": null,
+      "array": null,
+      "routing": "S"
+    }
+  ],
   "on_the_fly": null,
   "user_id": 1
 }
