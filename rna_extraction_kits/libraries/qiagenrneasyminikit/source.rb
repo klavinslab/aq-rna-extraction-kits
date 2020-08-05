@@ -50,28 +50,31 @@ module QiagenRNeasyMiniKit
     show do
       title 'Lyse Samples'
 
+      note "Get one #{LYSIS_TUBE_LONG} for each sample, and copy the IDs " \
+        "from the samples to the #{LYSIS_TUBE_SHORT}s."
       note "Pipet #{qty_display(buffer_volume)} of #{LYSIS_BUFFER} " \
-        "into a #{LYSIS_TUBE_LONG}."
-      note "Add #{qty_display(sample_volume)} sample to the " \
-        "#{LYSIS_BUFFER} in the #{LYSIS_TUBE_SHORT}."
+        "into each #{LYSIS_TUBE_SHORT}."
+      note "Transfer #{qty_display(sample_volume)} of each sample to the " \
+        "corresponding #{LYSIS_TUBE_SHORT}."
+      note "Mix by pulse-vortexing each tube for 15 #{SECONDS}."
       # TODO: Should this be kept in?
-      # note "Mix by pulse-vortexing for 15 #{SECONDS}."
       warning 'To ensure efficient lysis, it is essential that the sample is ' \
         "mixed thoroughly with #{LYSIS_BUFFER} to yield a homogeneous solution"
       # Frozen samples that have only been thawed once can also be used.
       # TODO: Should this be kept in?
-      # note "Incubate at room temperature (15-25#{DEGREES_C}) for 10 #{MINUTES}"
+      note "Incubate at room temperature (15-25#{DEGREES_C}) for 10 #{MINUTES}"
     end
 
     show do
       title 'Add Ethanol'
 
-      note "Briefly centrifuge the #{LYSIS_TUBE_LONG} to remove drops from " \
-        'the inside of the lid.'
-      note "Add #{qty_display(ethanol_volume)} ethanol (100%) to the " \
+      note "Briefly centrifuge the #{LYSIS_TUBE_LONG}s to remove drops from " \
+        'the inside of the lids.'
+      # TODO: provision ethanol at beginning and use shorter name
+      note "Add #{qty_display(ethanol_volume)} ethanol (100%) to each " \
         'sample, and mix by pulse-vortexing for >15 seconds. ' \
-        'After mixing, briefly centrifuge the tube to remove drops from ' \
-        'inside the lid.'
+        'After mixing, briefly centrifuge the tubes to remove drops from ' \
+        'inside the lids.'
       # Only ethanol should be used since other alcohols may result in
       # reduced RNA yield and purity. Do not use denatured alcohol, which
       # contains other substances such as methanol or methylethylketone.
@@ -98,12 +101,14 @@ module QiagenRNeasyMiniKit
     show do
       title 'Add Samples to Columns'
 
-      note "Carefully apply #{qty_display(loading_volume)} of the sample " \
-        "solution to the #{COLUMN_LONG} (in a wash tube (WT)) without " \
-        'wetting the rim.'
-      note "Close the cap, and centrifuge for #{CENTRIFUGE_TIME_AND_SPEED}."
-      note "Place the #{COLUMN_SHORT} into a clean #{WASH_TUBE_LONG}, and " \
-        'discard the wash tube containing the filtrate.'
+      note "Get one #{COLUMN_LONG} for each sample, and copy the IDs " \
+        "from the #{LYSIS_TUBE_LONG}s to the #{COLUMN_SHORT}s."
+      note "Carefully apply #{qty_display(loading_volume)} of each sample " \
+        "solution to the corresponding #{COLUMN_SHORT} " \
+        "(in #{WASH_TUBE_LONG}s) without wetting the rim."
+      note "Close the lids, and centrifuge for #{CENTRIFUGE_TIME_AND_SPEED}."
+      note "Place the #{COLUMN_SHORT}s into clean #{WASH_TUBE_SHORT}s, and " \
+        "discard the #{WASH_TUBE_SHORT}s containing the filtrate."
       warning 'Close each spin column in order to avoid cross-contamination ' \
         'during centrifugation.'
       # Centrifugation is performed at approximately 6000 x g in order to limit
@@ -113,9 +118,9 @@ module QiagenRNeasyMiniKit
       # until all of the solution has passed through.
       separator
 
-      note "Carefully open the #{COLUMN_SHORT}, and repeat the " \
+      note "Carefully open the #{COLUMN_SHORT}s, and repeat the " \
         "loading #{n_loads - 1} more times until all of the lysate has " \
-        'been loaded onto the spin column.'
+        "been loaded onto the #{COLUMN_SHORT}s."
     end
   end
 
@@ -123,23 +128,23 @@ module QiagenRNeasyMiniKit
     show do
       title 'Wash with Buffer RW1'
 
-      note "Add 700 #{MICROLITERS} Buffer RW1 to the #{COLUMN_LONG}."
-      note 'Close the lid gently, and centrifuge for ' \
+      note "Add 700 #{MICROLITERS} Buffer RW1 to each #{COLUMN_LONG}."
+      note 'Close the lids gently, and centrifuge for ' \
         "#{CENTRIFUGE_TIME_AND_SPEED}."
-      warning "Carefully remove the #{COLUMN_SHORT} from the collection " \
-        'tube so that the column does not contact the flow-through.'
-      note 'Empty the collection tube completely.'
-      note 'Reuse the collection tube in the next step.'
+      warning "Carefully remove the #{COLUMN_SHORT}s from the collection " \
+        'tubes so that the columns do not contact the flow-through.'
+      note 'Empty the collection tubes completely.'
+      note 'Reuse the collection tubes in the next step.'
     end
 
     show do
       title 'Wash twice with Buffer RPE'
 
-      note "Add 500 #{MICROLITERS} Buffer RPE to the #{COLUMN_LONG}."
-      note 'Close the lid gently, and centrifuge for ' \
+      note "Add 500 #{MICROLITERS} Buffer RPE to each #{COLUMN_LONG}."
+      note 'Close the lids gently, and centrifuge for ' \
         "#{CENTRIFUGE_TIME_AND_SPEED}."
-      note 'Empty the collection tube.'
-      note 'Reuse the collection tube in the next step.'
+      note 'Empty the collection tubes.'
+      note 'Reuse the collection tubes in the next step.'
       # Note: Buffer RPE is supplied as a concentrate. Ensure that ethanol is
       # added to Buffer RPE before use (see Things to do before starting).
       separator
@@ -148,16 +153,16 @@ module QiagenRNeasyMiniKit
       # The long centrifugation dries the spin column membrane, ensuring that
       # no ethanol is carried over during RNA elution. Residual ethanol may
       # interfere with downstream reactions.
-      note "Close the lid gently, and centrifuge for 2 #{MINUTES} at " \
+      note "Close the lids gently, and centrifuge for 2 #{MINUTES} at " \
         "#{qty_display(CENTRIFUGE_SPEED)}."
-      warning "Carefully remove the #{COLUMN_SHORT} from the collection " \
-        'tube so that the column does not contact the flow-through.'
-      note 'Discard the collection tube.'
+      warning "Carefully remove the #{COLUMN_SHORT}s from the collection " \
+        'tubes so that the columns do not contact the flow-through.'
+      note 'Discard the collection tubes.'
       separator
 
       # TODO: Should we do this step?
-      note "Place the #{COLUMN_SHORT} in a new #{WASH_TUBE_LONG}, " \
-        "and discard the #{WASH_TUBE_SHORT} containing the filtrate."
+      note "Place each #{COLUMN_SHORT} in a new #{WASH_TUBE_LONG}, " \
+        "and discard the #{WASH_TUBE_SHORT}s containing the filtrate."
       # This centrifuge speed is meant to be different
       note "Centrifuge at full speed for 1 #{MINUTES}."
     end
@@ -167,10 +172,12 @@ module QiagenRNeasyMiniKit
     show do
       title 'Elute RNA'
 
-      note "Place the #{COLUMN_LONG} in a #{ELUTION_TUBE_LONG}."
+      note "Get one #{ELUTION_TUBE_LONG} for each #{COLUMN_SHORT}, and copy " \
+        "the IDs from the #{COLUMN_SHORT}s to the #{ELUTION_TUBE_SHORT}s."
+      note "Place each #{COLUMN_LONG} in a #{ELUTION_TUBE_SHORT}."
       note "Add #{qty_display(ELUTION_VOLUME)} RNAse-free water directly " \
-        'to the spin column membrane.'
-      note "Close the lid gently, and centrifuge for 1 #{MINUTES} at " \
+        'to each spin column membrane.'
+      note "Close the lids gently, and centrifuge for 1 #{MINUTES} at " \
         "#{qty_display(CENTRIFUGE_SPEED)}."
     end
   end
