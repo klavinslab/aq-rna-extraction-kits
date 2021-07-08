@@ -20,6 +20,8 @@ module SupportedRNAExtractionKits
       extend QIAampDSPViralRNAMiniKit
     when QiagenRNeasyMiniKit::NAME
       extend QiagenRNeasyMiniKit
+    when MagMAXViralIINAIsolationKit::NAME
+      extend MagMAXViralIINAIsolationKit
     else
       raise ProtocolError, "Unrecognized RNA Extraction Kit: #{name}"
     end
